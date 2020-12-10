@@ -110,7 +110,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
             }
             crear(matriz, x, y, i, j, 2);
             if (matriz[x.length - 1][y.length - 1] != 0) {
-                var s = all_lcs(x.length, y.length, matriz, x, y, delay);
+                var s = all_lcsnd(x.length, y.length, matriz, x, y, delay);
                 document.getElementById("lcs").innerHTML = "<ul>"
                 s.forEach(element => {
                     document.getElementById("lcs").innerHTML += "<li>" + element + "</li>";
