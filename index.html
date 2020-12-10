@@ -19,12 +19,15 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
     <script type="text/javascript">
 
-        function which(word1,word2,delay) {
-            if (delay!=0) {
-                lcs(word1,word2,delay);
+        function which(word1, word2, delay) {
+            if (delay != 0) {
+                lcs(word1, word2, delay);
             } else {
-                lcs(word1,word2);            }
+                lcs(word1, word2);
+            }
         }
+
+
 
         async function lcs(word1, word2, delay) {
             document.getElementById("lcs").innerHTML = "";
@@ -48,7 +51,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
                 }
             }
             crear(matriz, x, y, i, j, 2);
-            if (matriz[x.length-1][y.length-1] != 0) {
+            if (matriz[x.length - 1][y.length - 1] != 0) {
                 var s = await all_lcs(x.length, y.length, matriz, x, y, delay);
                 await sleep(1000);
                 document.getElementById("lcs").innerHTML = "<ul>"
@@ -59,10 +62,9 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
             } else {
                 document.getElementById("lcs").innerHTML = "¡No hay LCS!"
             }
-
         }
 
-        async function all_lcs(xlength, ylength, matriz, xchar, ychar, delay) {
+        async function all_lcs(xlength, ylength, matriz, xchar, ychar) {
             var s = new Set();
             if (xlength == 0 || ylength == 0) {
                 sleep(delay);
@@ -70,22 +72,74 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
                 return s;
             }
             if (xchar[xlength - 1] == ychar[ylength - 1]) {
-                await sleep(delay);
-                crear(matriz, xchar, ychar, xlength, ylength, 1);
-                var tmp = await all_lcs(xlength - 1, ylength - 1, matriz, xchar, ychar, delay);
+                var tmp = all_lcs(xlength - 1, ylength - 1, matriz, xchar, ychar);
                 tmp.forEach(element => {
                     s.add(element + xchar[xlength - 1])
                 })
             } else {
                 if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
-                    await sleep(delay);
-                    crear(matriz, xchar, ychar, xlength, ylength, 0);
-                    s = await all_lcs(xlength - 1, ylength, matriz, xchar, ychar, delay);
+                    s = all_lcs(xlength - 1, ylength, matriz, xchar, ychar);
                 }
                 if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
-                    await sleep(delay);
-                    crear(matriz, xchar, ychar, xlength, ylength, 0);
-                    var tmp = await all_lcs(xlength, ylength - 1, matriz, xchar, ychar, delay);
+                    var tmp = await all_lcs(xlength, ylength - 1, matriz, xchar, ychar);
+                    tmp.forEach(element => {
+                        s.add(element);
+                    });
+                }
+            }
+            return s;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function lcs(word1, word2) {
+            document.getElementById("lcs").innerHTML = "";
+            var x = word1.split('');
+            var y = word2.split('');
+            const matriz = new Array(x.length + 1).fill(0).map(() => new Array(y.length + 1).fill(0));
+            for (var i = 0; i <= x.length; i++) {
+                for (var j = 0; j <= y.length; j++) {
+                    if (i == 0 || j == 0) {
+                        matriz[i][j] = 0;
+                    } else if (x[i - 1] == y[j - 1]) {
+                        matriz[i][j] = matriz[i - 1][j - 1] + 1;
+                    } else {
+                        matriz[i][j] = Math.max(matriz[i - 1][j], matriz[i][j - 1]);
+                    }
+                }
+            }
+            crear(matriz, x, y, i, j, 2);
+            if (matriz[x.length - 1][y.length - 1] != 0) {
+                var s = all_lcs(x.length, y.length, matriz, x, y, delay);
+                document.getElementById("lcs").innerHTML = "<ul>"
+                s.forEach(element => {
+                    document.getElementById("lcs").innerHTML += "<li>" + element + "</li>";
+                })
+                document.getElementById("lcs").innerHTML += "</ul>"
+            } else {
+                document.getElementById("lcs").innerHTML = "¡No hay LCS!"
+            }
+        }
+
+        function all_lcs(xlength, ylength, matriz, xchar, ychar, delay) {
+            var s = new Set();
+            if (xlength == 0 || ylength == 0) {
+                s.add("");
+                return s;
+            }
+            if (xchar[xlength - 1] == ychar[ylength - 1]) {
+                var tmp = all_lcs(xlength - 1, ylength - 1, matriz, xchar, ychar, delay);
+                tmp.forEach(element => {
+                    s.add(element + xchar[xlength - 1])
+                })
+            } else {
+                if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
+                    s = all_lcs(xlength - 1, ylength, matriz, xchar, ychar, delay);
+                }
+                if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
+                    var tmp = all_lcs(xlength, ylength - 1, matriz, xchar, ychar, delay);
                     tmp.forEach(element => {
                         s.add(element);
                     });
@@ -97,10 +151,6 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
             })
             document.getElementById("lcs").innerHTML += "</ul>"
             return s;
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         function crear(matriz, xchar, ychar, k, r, bool) {
