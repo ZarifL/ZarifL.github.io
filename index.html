@@ -19,11 +19,11 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
     <script type="text/javascript">
 
-        async function which(word1, word2, delay) {
+        function which(word1, word2, delay) {
             if (delay != 0) {
                 lcs(word1, word2, delay);
             } else {
-                lcs(word1, word2);
+                lcsnd(word1, word2);
             }
         }
 
@@ -92,7 +92,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        function lcs(word1, word2) {
+        function lcsnd(word1, word2) {
             document.getElementById("lcs").innerHTML = "";
             var x = word1.split('');
             var y = word2.split('');
@@ -121,7 +121,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
             }
         }
 
-        function all_lcs(xlength, ylength, matriz, xchar, ychar, delay) {
+        function all_lcsnd(xlength, ylength, matriz, xchar, ychar, delay) {
             var s = new Set();
             if (xlength == 0 || ylength == 0) {
                 s.add("");
