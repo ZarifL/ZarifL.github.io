@@ -19,6 +19,13 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
     <script type="text/javascript">
 
+        function which(word1,word2,delay) {
+            if (delay!=0) {
+                lcs(word1,word2,delay);
+            } else {
+                lcs(word1,word2);            }
+        }
+
         async function lcs(word1, word2, delay) {
             document.getElementById("lcs").innerHTML = "";
             var x = word1.split('');
@@ -167,7 +174,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
         <br>
         <li>
             <button type="button"
-                onclick='lcs(document.getElementById("word"+1).value, document.getElementById("word"+2).value, document.getElementById("delay").value)'>Longest
+                onclick='which(document.getElementById("word"+1).value, document.getElementById("word"+2).value, document.getElementById("delay").value)'>Longest
                 Common Subsequence</button>
             Delay:
             <input type="text" id="delay" value="100" size="11" style="vertical-align:1px">
