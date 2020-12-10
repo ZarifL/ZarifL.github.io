@@ -19,8 +19,8 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
     <script type="text/javascript">
 
-        function which(word1, word2, delay) {
-            if (delay != "0") {
+        async function which(word1, word2, delay) {
+            if (delay != 0) {
                 lcs(word1, word2, delay);
             } else {
                 lcs(word1, word2);
