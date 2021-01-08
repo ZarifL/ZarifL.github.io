@@ -49,7 +49,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
                 }
             }
             crear(matriz, x, y, i, j, 2);
-            if (matriz[x.length - 1][y.length - 1] != 0) {
+            if (matriz[x.length][y.length] != 0) {
                 var s = await all_lcs(x.length, y.length, matriz, x, y, delay);
                 await sleep(1000);
                 document.getElementById("lcs").innerHTML = "<ul>"
@@ -64,31 +64,31 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
         async function all_lcs(xlength, ylength, matriz, xchar, ychar, delay) {
             var s = new Set();
-            if (xlength == 0 || ylength == 0) {
+            if (xlength == 0 || ylength == 0 || matriz[xlength][ylength] == 0) {
                 sleep(delay);
                 s.add("");
-                return s;
-            }
-            if (xchar[xlength - 1] == ychar[ylength - 1]) {
-                await sleep(delay);
-                crear(matriz, xchar, ychar, xlength, ylength, 1);
-                var tmp = await all_lcs(xlength - 1, ylength - 1, matriz, xchar, ychar, delay);
-                tmp.forEach(element => {
-                    s.add(element + xchar[xlength - 1])
-                })
             } else {
-                if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
+                if (xchar[xlength - 1] == ychar[ylength - 1]) {
                     await sleep(delay);
-                    crear(matriz, xchar, ychar, xlength, ylength, 0);
-                    s = await all_lcs(xlength - 1, ylength, matriz, xchar, ychar, delay);
-                }
-                if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
-                    await sleep(delay);
-                    crear(matriz, xchar, ychar, xlength, ylength, 0);
-                    var tmp = await all_lcs(xlength, ylength - 1, matriz, xchar, ychar, delay);
+                    crear(matriz, xchar, ychar, xlength, ylength, 1);
+                    var tmp = await all_lcs(xlength - 1, ylength - 1, matriz, xchar, ychar, delay);
                     tmp.forEach(element => {
-                        s.add(element);
-                    });
+                        s.add(element + xchar[xlength - 1])
+                    })
+                } else {
+                    if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
+                        await sleep(delay);
+                        crear(matriz, xchar, ychar, xlength, ylength, 0);
+                        s = await all_lcs(xlength - 1, ylength, matriz, xchar, ychar, delay);
+                    }
+                    if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
+                        await sleep(delay);
+                        crear(matriz, xchar, ychar, xlength, ylength, 0);
+                        var tmp = await all_lcs(xlength, ylength - 1, matriz, xchar, ychar, delay);
+                        tmp.forEach(element => {
+                            s.add(element);
+                        });
+                    }
                 }
             }
             document.getElementById("lcs").innerHTML = "<ul>"
@@ -120,7 +120,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
                 }
             }
             crear(matriz, x, y, i, j, 2);
-            if (matriz[x.length - 1][y.length - 1] != 0) {
+            if (matriz[x.length][y.length] != 0) {
                 var s = all_lcsnd(x.length, y.length, matriz, x, y);
                 document.getElementById("lcs").innerHTML = "<ul>"
                 s.forEach(element => {
@@ -134,24 +134,24 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
 
         function all_lcsnd(xlength, ylength, matriz, xchar, ychar) {
             var s = new Set();
-            if (xlength == 0 || ylength == 0) {
+            if (xlength == 0 || ylength == 0 || matriz[xlength][ylength] == 0) {
                 s.add("");
-                return s;
-            }
-            if (xchar[xlength - 1] == ychar[ylength - 1]) {
-                var tmp = all_lcsnd(xlength - 1, ylength - 1, matriz, xchar, ychar);
-                tmp.forEach(element => {
-                    s.add(element + xchar[xlength - 1])
-                })
             } else {
-                if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
-                    s = all_lcsnd(xlength - 1, ylength, matriz, xchar, ychar);
-                }
-                if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
-                    var tmp = all_lcsnd(xlength, ylength - 1, matriz, xchar, ychar);
+                if (xchar[xlength - 1] == ychar[ylength - 1]) {
+                    var tmp = all_lcsnd(xlength - 1, ylength - 1, matriz, xchar, ychar);
                     tmp.forEach(element => {
-                        s.add(element);
-                    });
+                        s.add(element + xchar[xlength - 1])
+                    })
+                } else {
+                    if (matriz[xlength - 1][ylength] >= matriz[xlength][ylength - 1]) {
+                        s = all_lcsnd(xlength - 1, ylength, matriz, xchar, ychar);
+                    }
+                    if (matriz[xlength][ylength - 1] >= matriz[xlength - 1][ylength]) {
+                        var tmp = all_lcsnd(xlength, ylength - 1, matriz, xchar, ychar);
+                        tmp.forEach(element => {
+                            s.add(element);
+                        });
+                    }
                 }
             }
             return s;
