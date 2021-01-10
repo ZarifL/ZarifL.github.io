@@ -46,6 +46,7 @@ await retorna el valor de la funcion, en lugar de la promise: https://stackoverf
                     }
                 }
             }
+            await sleep(delay);
             crear(matriz, x, y, i, j, 2);
             if (matriz[x.length][y.length] != 0) {
                 var s = await all_lcs(x.length, y.length, matriz, x, y, delay);
